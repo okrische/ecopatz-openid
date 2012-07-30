@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <groupId>${parent.groupId}</groupId>
-  <artifactId>${parent.artifactId}-${project.name}</artifactId>
+  <artifactId>ecopatz-openid-core</artifactId>
   <version>${parent.version}</version>
   <name>core</name>
 </project>
