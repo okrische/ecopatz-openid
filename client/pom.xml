@@ -11,4 +11,11 @@
   <artifactId>ecopatz-openid-client</artifactId>
   <version>${parent.version}</version>
   <name>client</name>
+  <dependencies>
+  	<dependency>
+  		<groupId>ecopatz-openid</groupId>
+  		<artifactId>ecopatz-openid-core</artifactId>
+  		<version>${parent.version}</version>
+  	</dependency>
+  </dependencies>
 </project>
