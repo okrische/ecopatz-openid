@@ -1,12 +1,16 @@
+/.classpath
 /.project
 /.settings
 /target
 /core/.project
 /core/.settings
+/core/.classpath
 /core/target
 /client/.project
 /client/.settings
 /client/target
+/client/.classpath
 /server/.project
 /server/.settings
 /server/target
+/server/.classpath
