@@ -1,7 +1,9 @@
 package de.ecopatz.openid.core.impl;
 
+import java.math.BigInteger;
 import java.security.SecureRandom;
 
+import de.ecopatz.openid.core.OpenIDConstants;
 import de.ecopatz.openid.core.RandomSupplier;
 
 /**
@@ -12,7 +14,7 @@ import de.ecopatz.openid.core.RandomSupplier;
  */
 public class RandomSupplierImpl implements RandomSupplier{
 	// dont assume, that random is thread-safe. it looks like it isnt.
-	// in any way, random is guarded by this class
+	// in any way, random is guarded by its object
 	private final SecureRandom secureRandom;
 
 	public RandomSupplierImpl() {
@@ -24,7 +26,7 @@ public class RandomSupplierImpl implements RandomSupplier{
 
 	@Override
 	public long nextLong() {
-		synchronized (this) {
+		synchronized (secureRandom) {
 			return secureRandom.nextLong();
 		}
 	}
@@ -32,9 +34,42 @@ public class RandomSupplierImpl implements RandomSupplier{
 	@Override
 	public void nextInt(final int n, final int[] integers) {		
 		for(int i = 0; i < integers.length; i++) {
-			synchronized (this) { 
+			synchronized (secureRandom) { 
 				integers[i] = secureRandom.nextInt(n);	
 			}
 		}		
 	}
+	
+	@Override
+	public BigInteger newLargePrime() {
+		// TODO: do it better, than using defaults
+		return OpenIDConstants.DH_MODULUS_P;
+	}
+	
+	@Override
+	public BigInteger newGenerator(BigInteger prima) {
+		// TODO: do it better, than using defaults
+		return OpenIDConstants.DH_GENERATOR_G;
+	}
+	
+	private BigInteger newRandomBigInteger(final int bitLength) {
+		synchronized (secureRandom) {
+			// non-negative
+		   return new BigInteger(bitLength, secureRandom);	
+		}
+	}
+	
+	@Override
+	public BigInteger newBigInteger(final BigInteger min, final BigInteger max) {		
+		// 0 < x < max
+		final int bitLength = max.bitLength();
+		BigInteger x = newRandomBigInteger(bitLength);
+		while (x.compareTo(min) < 1 || x.compareTo(max) > -1) {
+			// next
+			x = newRandomBigInteger(bitLength);
+		}
+		return x;
+	}
+	
+	
 }

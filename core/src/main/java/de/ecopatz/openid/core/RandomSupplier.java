@@ -1,5 +1,6 @@
 package de.ecopatz.openid.core;
 
+import java.math.BigInteger;
 import java.util.Random;
 
 
@@ -25,4 +26,27 @@ public interface RandomSupplier {
 	 * @param integers
 	 */
 	void nextInt(int n, int[] integers);
+	
+	/**
+	 * Returns a large prime number 
+	 * 
+	 * @return a large prima number
+	 */
+	BigInteger newLargePrime();
+
+	/**
+	 * Returns a generator for a large prime
+	 * 
+	 * @param prime
+	 * @return generator
+	 */
+	BigInteger newGenerator(BigInteger prime);
+
+	/**
+	 * Returns a random non-negative number between min and max, exclusive min and max
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	BigInteger newBigInteger(BigInteger min, BigInteger max);
 }
