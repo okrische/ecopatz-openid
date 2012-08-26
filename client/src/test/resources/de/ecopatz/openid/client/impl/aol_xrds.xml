@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xrds:XRDS 
+    xmlns:xrds="xri://$xrds" 
+    xmlns:openid="http://openid.net/xmlns/1.0" 
+    xmlns="xri://$xrd*($v*2.0)"> 
+  <XRD> 
+   
+    <Service>
+      <Type>http://specs.openid.net/auth/2.0/return_to</Type>
+      <URI>https://api.screenname.aol.com/auth/oidRet</URI>
+    </Service>
+   
+   <Service priority="0"> 
+      <Type>http://specs.openid.net/auth/2.0/server</Type> 
+      <Type>http://openid.net/extensions/sreg/1.1</Type>
+      <Type>http://openid.net/srv/ax/1.0</Type>
+      <Type>http://specs.openid.net/extensions/pape/1.0</Type>
+      <Type>http://specs.openid.net/extensions/ui/1.0/mode/popup</Type>
+      <Type>http://specs.openid.net/auth/2.0/httpMapping</Type>
+      <Type>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/privatepersonalidentifier</Type>
+      <Type>http://www.idmanagement.gov/schema/2009/05/icam/no-pii.pdf</Type>
+      <Type>http://www.idmanagement.gov/schema/2009/05/icam/openid-trust-level1.pdf</Type>
+      <Type>http://csrc.nist.gov/publications/nistpubs/800-63/SP800-63V1_0_2.pdf</Type>
+      <URI>https://api.screenname.aol.com/auth/openidServer</URI> 
+    </Service>
+    
+    <Service priority="1"> 
+     <Type>http://openid.net/signon/1.0</Type>
+      <Type>http://openid.net/extensions/sreg/1.1</Type> 
+      <URI>https://api.screenname.aol.com/auth/openidServer</URI> 
+    </Service> 
+    
+  </XRD> 
+</xrds:XRDS>

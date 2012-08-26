@@ -1,6 +1,7 @@
 package de.ecopatz.openid.client.impl;
 
 import java.io.StringReader;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.stream.StreamFilter;
@@ -58,6 +59,9 @@ public class XRDSDocumentParserImpl implements XRDSDocumentParser {
 	}
 
 	public List<String> discoverEndpointURIs(final String document) {
+		if (document == null | document.isEmpty()) {
+			return Collections.emptyList();
+		}
 		// parse as XRDS
 		final StringReader stringReader = new StringReader(document);
 		final List<String> servers = Lists.newArrayListWithExpectedSize(2);

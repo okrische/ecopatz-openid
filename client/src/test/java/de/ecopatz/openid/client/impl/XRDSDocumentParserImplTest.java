@@ -1,22 +1,22 @@
 package de.ecopatz.openid.client.impl;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.ecopatz.openid.client.XRDSDiscoveryService;
 
 public class XRDSDocumentParserImplTest {
-
+	private final static Logger LOG = LoggerFactory.getLogger(XRDSDocumentParserImplTest.class);
 	// live is no good, when behind a firewall
-	private boolean live = false;
+	private boolean live = true;
 	private boolean fromFile = true;
 
 	@Test
@@ -44,18 +44,43 @@ public class XRDSDocumentParserImplTest {
 		check(url, expect, file);
 	}
 
+	@Ignore
+	@Test
+	public void testLiveJournal() throws IOException {
+		// seems like, livejournal returns xrds, but without indication of any endpoint. hmmm.
+		final String url = "http://www.livejournal.com/openid/server.bml";
+		final String expect = "";
+		final String file = "livejournal_xrds.xml";
+		check(url, expect, file);
+	}
+	
+	@Test
+	public void testAOL() throws IOException {
+		// http://www.livejournal.com/openid/server.bml
+		final String url = "http://openid.aol.com/";
+		final String expect = "https://api.screenname.aol.com/auth/openidServer";
+		final String file = "aol_xrds.xml";
+		check(url, expect, file);
+	}
+	
+	@Test
+	public void testVerisign() throws IOException {
+		final String url = "https://pip.verisignlabs.com/";
+		final String expect = "https://pip.verisignlabs.com/server";
+		final String file = "verisign_xrds.xml";
+		check(url, expect, file);
+	}
+
+	
 	private void checkResource(final URL resource, final String expectedEndpoint) {
 		final XRDSDocumentParserImpl xrdsDocumentParserImpl = new XRDSDocumentParserImpl();
-
-		try {
-			final String document = toStringFromURL(resource);
-			final List<String> discoverEndpointURIs = xrdsDocumentParserImpl.discoverEndpointURIs(document);
-			Assert.assertNotNull(discoverEndpointURIs);
-			Assert.assertTrue(!discoverEndpointURIs.isEmpty());
-			Assert.assertTrue("expected url not contained: "+expectedEndpoint,discoverEndpointURIs.contains(expectedEndpoint));
-		} catch (IOException e) {
-			Assert.fail("fail while loading or parsing: "+resource);
-		}
+		final XRDSDiscoveryService discovery = new XRDSDiscoveryServiceImpl();
+		final String document = discovery.locate(resource);
+		LOG.debug(document);
+		final List<String> discoverEndpointURIs = xrdsDocumentParserImpl.discoverEndpointURIs(document);
+		Assert.assertNotNull(discoverEndpointURIs);
+		Assert.assertTrue(!discoverEndpointURIs.isEmpty());
+		Assert.assertTrue("expected url not contained: "+expectedEndpoint,discoverEndpointURIs.contains(expectedEndpoint));
 
 	}
 
@@ -84,18 +109,4 @@ public class XRDSDocumentParserImplTest {
 		Assert.assertNotNull("missing: "+name,resource);
 		return resource;
 	}
-
-	private String toStringFromURL(final URL resource) throws IOException {
-		final InputStream openStream = resource.openStream();
-		final InputStreamReader inputStreamReader = new InputStreamReader(openStream, Charset.forName("UTF-8"));
-		final StringBuilder buffer = new StringBuilder();
-		Reader in = new BufferedReader(inputStreamReader);
-		int ch;
-		while ((ch = in.read()) > -1) {
-			buffer.append((char)ch);
-		}
-		in.close();
-		return buffer.toString();
-	}
-
 }

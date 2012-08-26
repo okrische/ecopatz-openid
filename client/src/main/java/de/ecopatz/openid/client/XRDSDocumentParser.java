@@ -3,7 +3,7 @@ package de.ecopatz.openid.client;
 import java.util.List;
 
 /**
- * A class that parses XRDS documents. Must be thread-safe
+ * An XRDS document parser. An implementation must be thread-safe.
  *  
  * @author krische
  * 
