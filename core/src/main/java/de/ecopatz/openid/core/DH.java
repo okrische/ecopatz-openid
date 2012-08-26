@@ -2,6 +2,12 @@ package de.ecopatz.openid.core;
 
 import java.math.BigInteger;
 
+/**
+ * Key Material
+ * 
+ * @author krische
+ * 
+ */
 public interface DH {	
 	/**
 	 * The public key, y
